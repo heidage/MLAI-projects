@@ -4,7 +4,8 @@ import tensorflow as tf
 import numpy as np
 import base64
 import cv2
-import json
+import io
+from PIL import Image
 
 model = tf.keras.models.load_model('../model/final_model.h5')
 app = Flask(__name__)
@@ -24,8 +25,9 @@ def predict_digit():
 def url_to_image(url):
     image_64 = url.split(',')[1]
     binary = base64.b64decode(image_64)
-    image = np.asarray(bytearray(binary),dtype='uint8')
-    image = cv2.imdecode(image,cv2.IMREAD_GRAYSCALE)
+    image = Image.open(io.BytesIO(binary))
+    image = cv2.cvtColor(np.array(image),cv2.IMREAD_GRAYSCALE)
+
     pred_img_resize = cv2.resize(image,(28,28))
     pred_img_resize = cv2.bitwise_not(pred_img_resize)
 
