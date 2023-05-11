@@ -3,11 +3,10 @@ from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 import base64
-import cv2
 import io
 from PIL import Image
 
-model = tf.keras.models.load_model('../model/final_model.h5')
+model = tf.keras.models.load_model('./final_model.h5')
 app = Flask(__name__)
 CORS(app)
 
