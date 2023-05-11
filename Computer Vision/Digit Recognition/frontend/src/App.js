@@ -137,6 +137,7 @@ function App() {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(x, y);
+    ctx.strokeStyle =  '#ff0000'
     ctx.stroke();
     setLastX(x);
     setLastY(y);
@@ -168,14 +169,12 @@ function App() {
                     </div>
                   </Grid>
                 </Grid>
-                <Grid xs={1} item>
-                  <IconButton
-                    onClick={() => setTheme(!theme)}
-                    className={classes.toggle}
-                  >
-                    <Brightness6Icon />
-                  </IconButton>
-                </Grid>
+                <IconButton
+                  onClick={() => setTheme(!theme)}
+                  className={classes.toggle}
+                >
+                  <Brightness6Icon />
+                </IconButton>
               </Grid>
               </ToolBar>
           </AppBar>

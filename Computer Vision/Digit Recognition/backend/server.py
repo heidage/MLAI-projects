@@ -13,9 +13,10 @@ CORS(app)
 
 @app.route('/process_image',methods=['POST'])
 def predict_digit():
-    image = request.json.get('image')
-    if image != "":
-        image_array = url_to_image(image)
+    jsonData = request.get_json()
+    data = jsonData['image']
+    if data != "":
+        image_array = url_to_image(data)
         result = model.predict(image_array)
         prediction = np.argmax(result,axis=1)[0]
         return {'image_prediction': int(prediction)}
@@ -23,16 +24,18 @@ def predict_digit():
         return {'image_prediction': "Nope"}
 
 def url_to_image(url):
-    image_64 = url.split(',')[1]
+    image_64 = url.split('base64,')[1]
     binary = base64.b64decode(image_64)
-    image = Image.open(io.BytesIO(binary))
-    image = cv2.cvtColor(np.array(image),cv2.IMREAD_GRAYSCALE)
+    image = Image.open(io.BytesIO(binary)).convert('L')
 
-    pred_img_resize = cv2.resize(image,(28,28))
-    pred_img_resize = cv2.bitwise_not(pred_img_resize)
+    pred_img_resize = image.resize((28,28), Image.ANTIALIAS)
+    
+    #handle the threshhold iof not array would be all 0 if i use black pen
+    threshold = 0
+    img = pred_img_resize.point(lambda p: p > threshold and 255)
 
+    pred_img_resize = np.array(img).reshape(-1,28,28,1)
     pred_img_normalized = pred_img_resize.astype('float32')/255.0
-    pred_img_normalized = pred_img_normalized.reshape(-1,28,28,1)
 
     return pred_img_normalized
 
