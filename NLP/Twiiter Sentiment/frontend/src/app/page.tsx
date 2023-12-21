@@ -7,9 +7,9 @@ import SideMenu from '@/components/SideMenu'
 export default function Home() {
   return (
     <main className={styles.main}>
-      <Header />
-      <SideMenu />
-      <Dashboard />
+      <Header/>
+      <SideMenu/>
+      <Dashboard/>
     </main>
   )
 }
