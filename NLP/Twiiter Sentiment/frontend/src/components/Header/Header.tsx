@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,11 +15,16 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import ThemeToggleButton from "../ThemeToggleButton";
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Header = ()=>{
+export type HeaderProps = {
+    ColorModeContext: React.Context<{ toggleColorMode: () => void }>;
+}
+
+const Header = (props: HeaderProps)=>{
+    const {ColorModeContext} = props;
     const {data: session } = useSession();
     const avatar = session?.user?.image as string;
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -60,7 +65,7 @@ const Header = ()=>{
                 textDecoration: 'none',
                 }}
             >
-                LOGO
+                FB Analytics
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -133,6 +138,7 @@ const Header = ()=>{
             <Box sx={{paddingRight: 5}}>
                 <Typography>Signed in as {session?.user?.email}</Typography>
             </Box>
+            <ThemeToggleButton ColorModeContext={ColorModeContext}/>
             <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open profile settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
