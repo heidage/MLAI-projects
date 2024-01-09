@@ -1,3 +1,7 @@
 #ignore csv files
 *.csv
+#ignore word embeddings
+*.kv
+*.npy
+
 ```
